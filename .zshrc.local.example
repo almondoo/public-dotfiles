@@ -1,0 +1,4 @@
+# Machine-local secrets — copied to ~/.zshrc.local by install.sh (NOT tracked by dotfiles).
+# Fill in your real values below. This file is sourced from ~/.zshrc.
+
+# export GH_WORK_TOKEN=your_token_here

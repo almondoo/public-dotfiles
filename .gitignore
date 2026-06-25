@@ -1,0 +1,65 @@
+# === Claude Code runtime ===
+.claude/projects/
+.claude/todos/
+.claude/tasks/
+.claude/shell-snapshots/
+.claude/statsig/
+.claude/ide/
+.claude/sessions/
+.claude/session-env/
+.claude/history/
+.claude/cache/
+.claude/plugins/
+.claude/backups/
+.claude/file-history/
+.claude/paste-cache/
+.claude/debug/
+.claude/downloads/
+.claude/chrome/
+.claude/teams/
+.claude/telemetry/
+.claude/usage-data/
+.claude/plans/
+.claude/*.jsonl
+.claude/.credentials.json
+.claude/settings.local.json
+.claude/.last-release-notes-seen-version
+.claude/.last-cleanup
+.claude/__store.db
+.claude/stats-cache.json
+.claude/mcp-needs-auth-cache.json
+.claude/security_warnings_state_*.json
+
+# === Secrets（将来用） ===
+.zshrc.local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+.aws/credentials
+.netrc
+*credentials*
+*secret*
+
+# === Shell history（将来用） ===
+.zsh_history
+.bash_history
+.python_history
+.node_repl_history
+
+# === Python ===
+__pycache__/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Editor ===
+*.swp
+*.swo
+
+# === Scratch / temp ===
+tmp/
