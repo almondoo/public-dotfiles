@@ -1,11 +1,11 @@
-# dotfiles
+# public-dotfiles
 
-個人の開発環境設定を git 管理するための private リポジトリ。
+個人の開発環境設定を git 管理するための public リポジトリ。
 現時点では Claude Code の設定（`~/.claude/`）のみを対象としている。
 
 ## 仕組み
 
-実体は `~/dotfiles/.claude/` に置き、`~/.claude/` 配下の各エントリは
+実体は `~/public-dotfiles/.claude/` に置き、`~/.claude/` 配下の各エントリは
 そこへの symlink にする。Claude Code は従来通り `~/.claude/` 経由で
 透過的に設定を読む。
 
@@ -18,8 +18,8 @@
 新しい環境でこのリポジトリを使う場合:
 
 ```bash
-git clone git@github.com:<user>/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone git@github.com:<user>/public-dotfiles.git ~/public-dotfiles
+cd ~/public-dotfiles
 ./install.sh
 ```
 
@@ -28,7 +28,7 @@ symlink に置き換える。既存の symlink は張り直す。
 
 ## 管理対象
 
-`~/dotfiles/.claude/` に置く実体:
+`~/public-dotfiles/.claude/` に置く実体:
 
 - `CLAUDE.md` — ユーザー scope のグローバル指示
 - `agents/` — ユーザー scope のサブエージェント定義
@@ -62,7 +62,7 @@ symlink に置き換える。既存の symlink は張り直す。
 ./uninstall.sh
 ```
 
-symlink のみ削除する。実体は `~/dotfiles/.claude/` に残るので、
+symlink のみ削除する。実体は `~/public-dotfiles/.claude/` に残るので、
 `install.sh` を再実行すれば復元できる。
 
 ## 注意
@@ -77,7 +77,7 @@ symlink のみ削除する。実体は `~/dotfiles/.claude/` に残るので、
 `.zshrc`, `.gitconfig` などを追加する場合の想定:
 
 ```
-~/dotfiles/
+~/public-dotfiles/
 ├── .claude/
 ├── zsh/
 │   └── .zshrc

@@ -10,7 +10,7 @@
 
 ## Skill Selection
 
-- **At task start, pick the matching skill** (don't default to inline). When unsure which fits — decision flow + competing-skill boundaries — read the chooser on demand, not loaded here: `~/dotfiles/docs/references/skill-select.md` (deeper reference: `docs/references/skill-selection-guide.md`).
+- **At task start, pick the matching skill** (don't default to inline). When unsure which fits — decision flow + competing-skill boundaries — read the chooser on demand, not loaded here: `~/public-dotfiles/docs/references/skill-select.md` (deeper reference: `docs/references/skill-selection-guide.md`).
 
 ## Tool Usage Rules
 

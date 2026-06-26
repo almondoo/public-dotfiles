@@ -30,6 +30,9 @@
 .claude/mcp-needs-auth-cache.json
 .claude/security_warnings_state_*.json
 
+# === Personal local overrides（git 管理しない） ===
+CLAUDE.local.md
+
 # === Secrets（将来用） ===
 .zshrc.local
 .env
