@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-DOTFILES="$HOME/dotfiles"
+# Resolve the repo location from this script's own path, so install.sh works
+# regardless of where the repo is cloned or what the directory is named.
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 link() {
     local src="$1"
