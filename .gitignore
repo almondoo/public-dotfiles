@@ -1,4 +1,7 @@
 # === Claude Code runtime ===
+# リポジトリ直下の .claude/ は Claude Code がプロジェクト設定として自動生成しうる
+# （設定の実体は claude/ に置く）ため、丸ごと除外する。
+/.claude/
 .claude/projects/
 .claude/todos/
 .claude/tasks/
@@ -33,7 +36,7 @@
 # === Personal local overrides（git 管理しない） ===
 CLAUDE.local.md
 
-# === Secrets（将来用） ===
+# === Secrets ===
 .zshrc.local
 .env
 .env.*
