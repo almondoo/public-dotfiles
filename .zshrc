@@ -131,6 +131,11 @@ export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
 eval "$(goenv init -)"
 
+# go install 済みのグローバルツール一覧
+# goenv は Go バージョンごとに GOPATH を分けるため、現行バージョン分のみ表示される
+# 各ツールのモジュール名・バージョンまで知りたい場合: go version -m "$(go env GOPATH)"/bin/*
+alias golist='ls -1 "$(go env GOPATH)/bin"'
+
 alias dc='docker compose'
 
 # pnpm
@@ -140,6 +145,39 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# Claude Code: メインセッション専用ルール(claude-main-extra.md)を既定で注入する。
+# 実在サブコマンドの時だけフラグを付けず素通し(許可リスト方式)。
+# これにより `claude プロンプト文` の位置引数起動でも注入される。
+# リストは `claude --help` の Commands: 節に追従させる。漏れた新サブコマンドには
+# 不要なフラグが付くが、ルートオプションとして消費され無視されるだけで実害はない
+# (`claude --append-system-prompt-file <file> doctor` が正常動作することを実測済み)。
+# headless 実行(-p/--print)はメインセッションではないため注入しない(2026-08-20〜):
+# システムプロンプト dump への混入と、/daily 等の `claude -p` バックフィルへの
+# 毎回 ~5.4k token の上乗せ + headless で応答不能な AskUserQuestion 必須ルールの
+# 混入を避ける。`--model x -p` の形があるため判定は $1 でなく "$@" 全体を走査し、
+# `--` 以降(プロンプト本文)は見ない。短フラグ連結(-pv 等)は検出しない既知の制限。
+claude() {
+  case "$1" in
+    agents|auth|auto-mode|doctor|gateway|install|mcp|plugin|plugins|project|setup-token|ultrareview|update|upgrade)
+      command claude "$@"
+      ;;
+    *)
+      local _arg
+      for _arg in "$@"; do
+        case "$_arg" in
+          --) break ;;
+          -p|--print)
+            command claude "$@"
+            return
+            ;;
+        esac
+      done
+      command claude \
+        --append-system-prompt-file "$HOME/public-dotfiles/claude/claude-main-extra.md" "$@"
+      ;;
+  esac
+}
 
 # Machine-local / secret settings (not tracked by dotfiles)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
