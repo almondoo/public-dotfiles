@@ -93,10 +93,9 @@ symlink のみ削除する。実体は `~/public-dotfiles/claude/` に残るの�
 - `~/.claude/settings.json` は MCP サーバ設定など環境固有の値を含む
   可能性がある。共有前に内容を目視確認すること。
 
-## private dotfiles との関係
+## settings.json と本文の対応について
 
-`claude/` 配下は作者の private dotfiles から必要なものだけを抜き出した部分集合で、
 `settings.json` は公開用に簡略化している（`gh` 関連の permissions や個人環境固有の
-設定は含めていない）。そのため `CLAUDE.md` / `claude-main-extra.md` の本文には、
+設定は含めていない）。また `CLAUDE.md` / `claude-main-extra.md` の本文には、
 この repo に含めていないスキル（例: `workflow-model-selection`）や設定への言及が
 残っている箇所がある。
