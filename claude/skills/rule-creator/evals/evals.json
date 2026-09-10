@@ -1,0 +1,53 @@
+{
+  "skill_name": "rule-creator",
+  "evals": [
+    {
+      "id": 0,
+      "name": "split-bloated-claudemd",
+      "prompt": "CLAUDE.md が長くなってきたので .claude/rules/ に分割してほしい。プロジェクトは <project> です。",
+      "expected_output": "API / UI / テストの規約が paths 付き rule に分かれ、CLAUDE.md からは移動分が削除される。マイグレーション手順・リリース手順は rule にせず skill 行きと判定、「絶対に守ること」は項目ごとに強制手段を判定してレポートに明記する（.env は permissions.deny、テスト未実行コミットと migrations 編集禁止は PreToolUse hook）。コマンドと構成は CLAUDE.md に残る。",
+      "files": ["fixtures/base + fixtures/bloated-CLAUDE.md"],
+      "assertions": [
+        "rules-split-by-topic: .claude/rules/ contains separate files for API, UI, and testing conventions (one topic per file, descriptive filenames)",
+        "paths-globs-match-fixture: each of the API / UI / testing rule files has a paths: frontmatter (YAML list) whose globs match src/api/users.ts, src/ui/Button.tsx, and src/api/users.test.ts respectively, and the API rule's globs do not match src/ui/Button.tsx nor the UI rule's globs src/api/users.ts (no catch-all like **)",
+        "moved-sections-removed-from-claudemd: CLAUDE.md no longer contains the API / UI / testing convention bullets that were moved to rules",
+        "always-on-facts-stay-in-claudemd: CLAUDE.md still contains the コマンド and 構成 sections",
+        "procedures-not-in-rules: the DB migration procedure and release procedure are not written into any .claude/rules file, and the report says they belong in a skill",
+        "enforcement-routed-to-deny-or-hook: the report recommends real enforcement for the 絶対に守ること items (permissions.deny for static path patterns like .env, a PreToolUse hook where logic is needed) rather than presenting a rule as enforcement",
+        "verification-instructed: the report tells the user to verify loading via /context (after reading a matching file for scoped rules)",
+        "no-load-on-create-claim: the report never states that a paths:-scoped rule loads automatically when a new matching file is created (only Read triggers loading)",
+        "env-rule-not-scoped-to-env: no .claude/rules/*.md file has a paths: glob matching .env or .env.*; the .env prohibition fact is either in an unscoped rule or left in root CLAUDE.md"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "new-scoped-rule-from-description",
+      "prompt": "src/api 配下のハンドラの規約を rules に書いてほしい。内容は、リクエストは zod でバリデーションする、エラーは AppError を throw する、ハンドラ内で res.json を呼ばない、prisma は src/lib/prisma.ts から import する、ページネーションは cursor 方式で offset 禁止。プロジェクトは <project> です。",
+      "expected_output": "1ファイルの rule が src/api/** 系の paths 付きで作られ、5項目が具体的に書かれる。手順やコードから自明な内容は含まない。",
+      "files": ["fixtures/base"],
+      "assertions": [
+        "single-rule-file: exactly one new file is created under .claude/rules/",
+        "paths-scoped-to-api: the file has a paths: frontmatter (YAML list) whose globs match src/api/users.ts and do not match src/ui/Button.tsx",
+        "all-five-conventions-present: the rule states all five items (zod validation, AppError, no res.json in handlers, import prisma from src/lib/prisma.ts, cursor pagination / no offset) concretely",
+        "facts-only-and-short: the rule contains no numbered multi-step procedure and is under 60 lines",
+        "no-duplication-into-claudemd: CLAUDE.md was not also given the same conventions",
+        "verification-instructed: the report tells the user to verify loading via /context after reading a matching file",
+        "code-style-not-routed-to-hook: the report does not recommend a PreToolUse hook or permissions.deny for any of the five conventions; for the offset prohibition it adds a one-line enforcement note: an existing lint rule, 'lint rule if enforcement is wanted', or, if it judges lint cannot detect the pattern, the review/test check that would (fixtures/base has no eslint config)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "procedure-requested-as-rule",
+      "prompt": "DB マイグレーションの手順を .claude/rules に追加してほしい。schema.prisma を編集 → pnpm db:migrate --name <英語スネークケース> → 生成された migration.sql に DROP や型変更が無いか確認して、あれば2段階に分ける → prisma/seed.ts を更新 → PR に「DB 変更あり」ラベル。あと prisma/migrations 配下の既存ファイルは編集禁止なのもどこかに書きたい。プロジェクトは <project> です。",
+      "expected_output": "手順部分は rule ではなく skill が適切だと説明し、rule には prisma 配下に効く事実（migrations は append-only、命名規則など）だけを書く。編集禁止は rule だけでは強制にならないと述べ、permissions.deny か PreToolUse hook のどちらが適切かを理由付きで案内する。",
+      "files": ["fixtures/base"],
+      "assertions": [
+        "procedure-not-written-as-rule: no file under .claude/rules/ contains the ordered multi-step migration procedure (schema edit → migrate → check → seed → PR label)",
+        "skill-recommended-for-procedure: the report explains that the step-by-step procedure belongs in a skill, and either creates one under .claude/skills/ or offers to",
+        "rule-holds-prisma-facts-not-steps: a rule is created with a paths: glob that matches prisma/schema.prisma (prisma/** style, so the schema edit that precedes migration generation loads it; prisma/migrations/** alone fails), containing no ordered steps, and it carries the standing facts embedded in the procedure: at minimum append-only migrations, plus the naming rule (English snake_case) and the two-phase policy for destructive changes",
+        "enforcement-recommended-for-prohibition: the report says the 'do not edit existing migrations' prohibition is advisory as rule text and recommends tool-layer enforcement (a PreToolUse hook, or permissions.deny with correct reasoning about why it fits or does not)",
+        "read-trigger-caveat-noted: the report notes that a paths-scoped rule fires on Read, not Write, and explains which Read (e.g. the schema.prisma edit) is expected to load it before a new migration is created, without claiming the rule loads on file creation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "1000000",
+    "CLAUDE_CODE_NEW_INIT": "1",
+    "CLAUDE_CODE_NO_FLICKER": "1"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "permissions": {
+    "allow": [
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Skill(commit-commands:commit)",
+      "Bash(pwd)",
+      "Bash(ls *)",
+      "Bash(wc *)",
+      "Bash(grep *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git show *)",
+      "Bash(git stash *)",
+      "Bash(git ls-tree *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Read(secrets/**)",
+      "Read(*credential*)",
+      "Read(*secret*)",
+      "Read(*.pem)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.kube/**)",
+      "Read(~/.docker/**)",
+      "Read(~/.ssh/**)",
+      "Bash(rm -f *)",
+      "Bash(rm -rf *)",
+      "Bash(rm -r *)",
+      "Bash(shred *)",
+      "Bash(truncate *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(chmod 777 *)",
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(cd *)",
+      "Bash(bash -c *)",
+      "Bash(sh -c *)",
+      "Bash(zsh -c *)",
+      "Bash(nc *)",
+      "Bash(ncat *)",
+      "Bash(find * -delete)",
+      "Bash(find * -exec rm *)",
+      "Bash(git -C *)",
+      "Bash(git --git-dir*)",
+      "Bash(git --work-tree*)",
+      "Bash(git clean *)",
+      "Bash(git push --force*)",
+      "Bash(git push * --force*)",
+      "Bash(git push -f *)",
+      "Bash(git push * -f *)",
+      "Bash(git push * -f)",
+      "Bash(git push --delete *)",
+      "Bash(git push * --delete *)",
+      "Bash(git push -d *)",
+      "Bash(git push * -d *)",
+      "Bash(git push --mirror*)",
+      "Bash(git push * --mirror*)",
+      "Bash(git push --prune*)",
+      "Bash(git push * --prune*)",
+      "Bash(git push * :*)",
+      "Bash(git push * +*)",
+      "Bash(git checkout -- *)",
+      "Bash(git checkout HEAD -- *)",
+      "Bash(git checkout origin/* -- *)",
+      "Bash(git checkout .*)",
+      "Bash(git checkout * -- *)",
+      "Bash(git checkout -f *)",
+      "Bash(git checkout --force *)",
+      "Bash(git checkout -B *)",
+      "Bash(git switch --discard-changes *)",
+      "Bash(git switch -C *)",
+      "Bash(git restore *)",
+      "Bash(git reset --hard *)",
+      "Bash(git branch -D *)"
+    ],
+    "ask": [
+      "Bash(git merge *)",
+      "Bash(git rebase *)",
+      "Bash(git cherry-pick *)",
+      "Bash(git tag *)",
+      "Bash(git push *)",
+      "Bash(git reset *)",
+      "Bash(git stash drop *)",
+      "Bash(git stash clear *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/inject-subagent-model.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/guide-destructive-rm.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "symlinkDirectories": [
+      "node_modules"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 ~/.claude/statusline.py"
+  },
+  "enabledPlugins": {
+    "commit-commands@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "claude-security@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
+  },
+  "outputStyle": "Concise-custom",
+  "language": "Japanese"
+}
